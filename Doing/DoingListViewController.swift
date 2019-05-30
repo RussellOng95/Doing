@@ -11,10 +11,15 @@ import UIKit
 class DoingListViewController: UITableViewController {
     
     var itemArray = ["Find Mike", "Find Eggos", "Find me"]
-
+    
+    let defaults = UserDefaults.standard
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
+        if let items = defaults.array(forKey: "DoingListArray") as? [String] {
+            itemArray = items
+        }
     }
     
     //MARK - Tableview Datasource Methods
@@ -46,6 +51,9 @@ class DoingListViewController: UITableViewController {
         
         let action = UIAlertAction(title: "Add Item", style: .default) { (action) in
             self.itemArray.append(textField.text!)
+            
+            self.defaults.set(self.itemArray, forKey: "DoingListArray")
+            
             self.tableView.reloadData()
         
         }
